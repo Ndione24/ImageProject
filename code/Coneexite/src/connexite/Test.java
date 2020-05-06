@@ -11,10 +11,7 @@ public class Test {
 	public static void main(String[] args) {
 		
 		int nombre;
-		
-
 		File path = new File("bdd\\escalier1.JPG");
-
 		BufferedImage img = null;
 		
 		try {
@@ -31,12 +28,9 @@ public class Test {
 		 ccl.Label(img, 0, EightConnex) ; // On calcule (étiquette) les composantes connexes.  On ne prend pas en compte la couleur noire car c'est le fond. Mettre -1 pour caractériser TOUTE la texture.
 		int[][] Carte = ccl.Labels() ; // la carte contenant la numérotation de chaque composante.
 		int[] Sizes = ccl.Sizes() ;
-		nombre = ccl.NumberOfConnectedComponent();
-		
-		
+		nombre = ccl.NumberOfConnectedComponent();		
 		System.out.println("nombre = "+nombre);
 		
-
 	}
 
 }

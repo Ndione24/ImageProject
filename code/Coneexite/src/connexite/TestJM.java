@@ -14,8 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-
-
 public class TestJM {
 
 	public static void imshow(BufferedImage image) throws IOException {
@@ -276,6 +274,131 @@ public class TestJM {
 	{
 		return null;
 	}
+	
+	
+	/**
+	 * il permet de creer l histogramme de projection horizontal et vertical
+	 * @param i l image pour laquelle on va creer l histogramme
+	 * @throws IOException
+	 */
+	
+	public static BufferedImage projection(BufferedImage i) throws IOException {
+
+		int longeur  = i.getWidth();
+		int largeur = i.getHeight();
+		int[] pHor = new int[largeur];
+		int[] pVer = new int[longeur];
+
+		for(int v=0 ; v<largeur ; v++) {
+
+			for(int u=0; u<longeur ; u++) {
+
+				int p = i.getRGB(u,v);
+				int r = (p>>16)&0xff;
+
+				if(r != 255) {
+					pHor[v]++;
+					pVer[u]++;
+				}
+			//	System.out.println(pHor[v]);
+
+			}
+
+		}
+
+
+		BufferedImage img1 = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		for(int x = 0 ; x < i.getHeight() ; x++) {
+
+			for(int y = 0 ; y < i.getWidth() ; y++) {
+
+				img1.setRGB(y, x,Color.WHITE.getRGB());;				 
+			}
+
+		}
+
+				for(int x=0 ; x<i.getHeight();x++) {
+					
+					for(int y = 0 ; y < pHor[x] ; y++) {
+		
+						img1.setRGB(y, x,Color.BLACK.getRGB());
+						
+					}
+				}
+
+				return img1;
+
+	}
+	
+    /**
+     * Crops an image to the specified region
+     * @param bufferedImage the image that will be crop
+     * @param x the upper left x coordinate that this region will start
+     * @param y the upper left y coordinate that this region will start
+     * @param width the width of the region that will be crop
+     * @param height the height of the region that will be crop
+     * @return the image that was cropped.
+     * @throws IOException 
+     */
+    public static BufferedImage cropImage(BufferedImage bufferedImage, int x, int y, int width, int height){
+        BufferedImage croppedImage = bufferedImage.getSubimage(x, y, width, height);
+        return croppedImage;
+    } 
+    
+    
+	/*
+
+	public static BufferedImage projection(BufferedImage i) throws IOException {
+
+		int longeur  = i.getWidth();
+		int largeur = i.getHeight();
+		int[] pHor = new int[largeur];
+		int[] pVer = new int[longeur];
+
+		for(int v=0 ; v<largeur ; v++) {
+
+			for(int u=0; u<longeur ; u++) {
+
+				int p = i.getRGB(u, v);
+				int r = (p>>16)&0xff;
+
+				if(r != 255) {
+					pHor[v]++;
+					pVer[u]++;
+				}
+				//System.out.println(pHor[v]);
+
+			}
+
+		}
+
+		//System.out.println(pHor[5]);
+
+		BufferedImage img1 = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		for(int x = 0 ; x < i.getHeight() ; x++) {
+
+			for(int y = 0 ; y < pHor[x] ; y++) {
+
+				img1.setRGB(y, x,Color.BLACK.getRGB());;				 
+			}
+
+		}
+
+				for(int x=0 ; x<i.getHeight();x++) {
+					
+					for(int y = 0 ; y < pHor[y] ; y++) {
+		
+						
+						img1.setRGB(y, x,Color.WHITE.getRGB());;				 
+					}
+				}
+
+				return img1;
+
+	}
+*/
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String imgPath = "bdd//myImg.JPG";
@@ -286,11 +409,14 @@ public class TestJM {
 		String imgPath2 = "bdd//escalier2.JPG";
 		String imgPath3 = "bdd//escalier3.JPG";
 		String imgPath6="bdd//myImgF.JPG";
-		File path = new File(imgPath6); // Chemin vers l'image
+		String imgPath7="bdd//imagMourad.JPG";
+		String imgPath8="bdd//im3.JPG";
+		String imgPath9="bdd//imag5.JPG";
+		
+		File path = new File(imgPath7); // Chemin vers l'image
 
 		BufferedImage img1 = null;
 		BufferedImage img2 = null;
-
 		try {
 			img1 = ImageIO.read(path);
 			img2 = ImageIO.read(path);
@@ -299,29 +425,27 @@ public class TestJM {
 			e1.printStackTrace();
 		}
 		imshow(img1);
-		BufferedImage res;
+		BufferedImage res,tet;
 		res = nvgris(img2);
-		
+		tet=nvgris(img2);		
 		imshow(res);
 		Thread.sleep(5000);
-		res = exo3bin(res);
-
 		filtremedian(res);
-
+		res = exo3bin(tet);
 		imshow(res);
-	boolean EightConnex = true ; // On travaille en 8-connexité.
-		
+		tet=projection(res);
+		imshow(tet);
+        BufferedImage imgCrop= cropImage(tet, 300, 0, tet.getWidth()-300, tet.getHeight());
+        imshow(imgCrop);
+		boolean EightConnex = true ; // On travaille en 8-connexité.
 		ConnectedComponentLabeling ccl = new Connexite() ;
 		//nombre = ccl.NumberOfConnectedComponent();
-		 ccl.Label(res, 0, EightConnex) ; // On calcule (étiquette) les composantes connexes.  On ne prend pas en compte la couleur noire car c'est le fond. Mettre -1 pour caractériser TOUTE la texture.
+		 ccl.Label(imgCrop, 255, EightConnex) ; // On calcule (étiquette) les composantes connexes.  On ne prend pas en compte la couleur noire car c'est le fond. Mettre -1 pour caractériser TOUTE la texture.
 		int[][] Carte = ccl.Labels() ; // la carte contenant la numérotation de chaque composante.
 		int[] Sizes = ccl.Sizes() ;
 		int nombre = ccl.NumberOfConnectedComponent();
-		
-		
+	
 		System.out.println("nombre = "+nombre);
 		//arrayImageBinaire(res);
-
 	}
-
 }

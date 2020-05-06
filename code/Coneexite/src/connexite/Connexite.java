@@ -106,8 +106,6 @@ public class Connexite implements ConnectedComponentLabeling
 		
 		ComposanteIdentiques = null ;
 		ComposanteIdentiques = new int[Increment] ;
-		//ArraysOperations.SetConstant(ComposanteIdentiques, 0) ;
-
 		for (i=0 ; i < hauteur ; i++)
 			for (j=0 ; j < largeur ; j++)
 				if ( wr.getSample(j, i, 0) == BackGround ) Labels[i][j] = 0 ;

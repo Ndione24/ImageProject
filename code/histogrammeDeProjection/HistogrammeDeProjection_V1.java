@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class HistogrammeDeProjection {
+public class HistogrammeDeProjection_V1 {
 
 
 	public static void imshow(BufferedImage image) throws IOException {
@@ -39,7 +39,7 @@ public class HistogrammeDeProjection {
 
 			for(int u=0; u<longeur ; u++) {
 
-				int p = i.getRGB(u,v);
+				int p = i.getRGB(u, v);
 				int r = (p>>16)&0xff;
 
 				if(r != 255) {
@@ -52,24 +52,25 @@ public class HistogrammeDeProjection {
 
 		}
 
+		System.out.println(pHor[5]);
 
 		BufferedImage img1 = new BufferedImage(i.getWidth(), i.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 		for(int x = 0 ; x < i.getHeight() ; x++) {
 
-			for(int y = 0 ; y < i.getWidth() ; y++) {
+			for(int y = 0 ; y < pHor[x] ; y++) {
 
-				img1.setRGB(y, x,Color.WHITE.getRGB());;				 
+				img1.setRGB(y, x,Color.BLACK.getRGB());;				 
 			}
 
 		}
 
 				for(int x=0 ; x<i.getHeight();x++) {
 					
-					for(int y = 0 ; y < pHor[x] ; y++) {
+					for(int y = 0 ; y < pHor[y] ; y++) {
 		
-						img1.setRGB(y, x,Color.BLACK.getRGB());
 						
+						img1.setRGB(y, x,Color.WHITE.getRGB());;				 
 					}
 				}
 
@@ -80,7 +81,7 @@ public class HistogrammeDeProjection {
 	public static void main(String[] args) throws IOException {
 
 
-		File path = new File("C:\\Users\\boual\\OneDrive\\Bureau\\doc4.jpg");
+		File path = new File("C:\\Users\\boual\\OneDrive\\Bureau\\myImgF.jpg");
 		BufferedImage img = null;
 		img = ImageIO.read(path);
 

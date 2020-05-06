@@ -17,6 +17,7 @@ public class Label8 {
 	  static Color white = new Color (255,255,255);
 	  static int couleurblanc = white.getRGB();
 	   static int keymax =0;
+	   static int nbescaliers=0;
 	
 	
 	static void preparation(int[][] fb, int iw, int ih) {
@@ -140,7 +141,7 @@ public class Label8 {
                 }
         }
         
-        //parcours le hashmap ppur trouver la plus grande valeur de pixel qu'ont les couleurs dans le but de normaliser 
+        //parcours le hashmap(treemap pour avoir dans l'ordre les valeurs) ppur trouver la plus grande valeur de pixel qu'ont les couleurs dans le but de normaliser 
         
         for (Entry<Integer, Double> entry : map.entrySet())
         {
@@ -160,16 +161,93 @@ public class Label8 {
      
      
      // POUR NORMALISER les valeurs des aires entre 0 et 1 avec la valeur max 
-       for (Entry<Integer, Double> entry : map.entrySet())
+       /**for (Entry<Integer, Double> entry : map.entrySet())
         {
         	Double buffer = entry.getValue();
         	buffer/= max;
         	map.replace(entry.getKey(), buffer);
         	
         	
-        }
+        }**/
        
-       // reste ï¿½ trouver le bon seuillage du nombre de pixels sur des images 
+       // reste à trouver le bon seuillage du nombre de pixels sur des images 
+       
+       
+    
+       	for(Entry<Integer, Double> entry : map.entrySet())
+       	{
+       		if(entry.getValue()>=50000)
+       		{
+       			keymax= entry.getKey();
+
+       			for(int y = 0; y < h; y++) 
+       			{
+       				for(int x = 0; x < w; x++) 
+                   		{
+                  	 
+                  	 			int pixel= image.getRGB(x, y);
+                  	 			/*int r = (pixel>>16)&0xff; 
+                  	
+                  	 			int g = (pixel>>8)&0xff; 
+                  	 			int b = pixel&0xff; */
+                  	
+                  	 			//image.setRGB(x, y, couleurblanc);
+                  	 			if (pixel == keymax)
+                  	 			{
+                  	 				image.setRGB(x, y,-16777216) ;
+                  	 			}
+                  		 
+                   		}
+       		
+       			}
+       			//nbescaliers--;
+       			
+       		}
+       		else if(entry.getValue()>=2500 && entry.getValue()<=50000)
+       		{
+       		//keymax = entry.getKey();
+       		
+       		nbescaliers++;
+       	
+       		
+       		
+       	
+       		}
+       	}
+       	
+       	
+       
+       	for(int y = 0; y < h; y++) 
+           {
+               for(int x = 0; x < w; x++) 
+               	{
+              	 
+              	 	int pixel= image.getRGB(x, y);
+              	 	int r = (pixel>>16)&0xff; 
+              	
+                   int g = (pixel>>8)&0xff; 
+                   int b = pixel&0xff; 
+                   if (r>0 || b>0 || g>0) 
+                   {
+                	  
+                   image.setRGB(x, y, couleurblanc);
+                   
+                   }
+                  }
+               	
+               
+           }
+       	
+       	
+       
+       	
+       
+       
+       
+       System.out.println("NOMBRE ESCALIERS ="+nbescaliers);
+       	
+     
+       
 
        return colors.size();
 }

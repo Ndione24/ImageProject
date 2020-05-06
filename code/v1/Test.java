@@ -167,7 +167,7 @@ public class Test {
 	}
 	
 
-	public static void egalisation(BufferedImage img) {
+	public static BufferedImage egalisation(BufferedImage img) {
 
 		int width = img.getWidth();
 		int height = img.getHeight();
@@ -201,6 +201,7 @@ public class Test {
 				img.getRaster().setPixel(x, y, iarray);
 			}
 		}
+		return img;
 	}
 
 	/*public static void cc() throws IOException {
@@ -231,7 +232,7 @@ public class Test {
 	
 
 	public static void main(String[] args) throws IOException {
-		File path = new File("/Users/Jaym/Documents/Projet Image/escalier7.jpg"); //Chemin vers l'image
+		File path = new File("C:\\Users\\Utilisateur\\Pictures\\Image\\escalier.jpg"); //Chemin vers l'image
 
 		BufferedImage img1 = null;
 		BufferedImage img2 = null;
@@ -244,15 +245,28 @@ public class Test {
 		}
 		imshow(img1);
 		BufferedImage res;
-		res = nvgris(img2);
-		res = exo3bin(res);
+		BufferedImage res1;
+		BufferedImage res2;
+		BufferedImage res3;
+		res = nvgris(img1);
+		imshow(res);
+		//res = exo3bin(res);
 		
-
-		filtremedian(res);
-		// � revoir
+		res1= exo3bin(res);
+		//filtremedian(res);
+		
 		//cc();
 		
-		imshow(res);
+		
+		imshow(res1);
+		res2= filtremedian(res1);
+		imshow(res2);
+		
+		
+		BufferedImage coloredescaliers = Label8.getCC(res2);
+		imshow(coloredescaliers);
+		Label8.getNumberOfCC(coloredescaliers);
+		
 
 	}
 

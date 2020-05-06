@@ -1,9 +1,11 @@
-package projet;
+package connexite;
 
-import td03.Exo2;
+//import td03.Exo2;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -12,7 +14,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class ProjetJM {
+
+
+public class TestJM {
 
 	public static void imshow(BufferedImage image) throws IOException {
 		// Instantiate JFrame
@@ -72,6 +76,7 @@ public class ProjetJM {
 				int r = (p >> 16) & 0xff;
 				if (r < teta) {
 					imgbin.getRaster().setPixel(j, i, noir);
+
 				} else {
 					imgbin.getRaster().setPixel(j, i, blanc);
 				}
@@ -81,7 +86,65 @@ public class ProjetJM {
 		return imgbin;
 
 	}
+	
+	/*
+	public static BufferedImage divideImage(BufferedImage img) 
+	{
+		int height=img.getHeight();
+		int width=img.getWidth();
+		
+	} */
 
+	public static int[][] arrayImageBinaire(BufferedImage img) throws IOException {
+		int arrayBinaire[][];
+		
+		File textBinaire= new File("bdd\\binaire.txt");
+		textBinaire.createNewFile();
+		BufferedWriter bw=new BufferedWriter(new FileWriter(textBinaire));	
+		BufferedImage result = img;
+		int height = result.getHeight();
+		int width = result.getWidth();
+		arrayBinaire = new int[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				int p = result.getRGB(j, i);
+				int r = p >> 16 & 0xff;
+				int v = p >> 8 & 0xff;
+				int b = p & 0xff;
+				
+				// System.out.println("r="+r+" p="+p +" ble"+b+" v"+v);
+				
+				arrayBinaire[i][j] = r;
+			}
+		}
+
+		//System.out.print("+---+---+---+---+---+---+---+\n");
+		//System.out.print("|");
+		String bar="+---";
+		for(int o=0;o<20;o++) 
+		{
+			bar+="+---";
+		}
+		for (int i = 0; i < 20; i++) {
+			//System.out.print("+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+\n");
+			System.out.println(bar);
+			System.out.print( " " + " " + "|");
+			for (int j = 0; j < 20; j++) {
+				
+				if(arrayBinaire[i][j]==255) {
+					System.out.print(1 + " " + "|");
+				}
+				else {
+					System.out.print(0 + " " + "|");
+				}
+				
+			}
+			System.out.print("\n");
+		}
+
+		return arrayBinaire;
+
+	}
 	// code pour mettre l'image en niveau de gris
 
 	public static BufferedImage nvgris(BufferedImage imgris) throws IOException {
@@ -101,7 +164,7 @@ public class ProjetJM {
 
 			}
 		}
-		//egalisation(imgris);
+		// egalisation(imgris);
 		return imgris;
 	}
 
@@ -157,10 +220,9 @@ public class ProjetJM {
 				threshold = t;
 			}
 		}
-		System.out.println(threshold);
+		// System.out.println(threshold);
 		return threshold;
 	}
-	
 
 	public static void egalisation(BufferedImage img) {
 
@@ -198,12 +260,37 @@ public class ProjetJM {
 		}
 	}
 
+	/**
+	 * La dilation permet de boucher les trous de l'objet, autrement dit augmente la
+	 * taille de l'image
+	 * 
+	 * @param filtre : filtre qui sera appliqué à l'image
+	 * @param img    : l'image qui sera filtrée
+	 * @return une image filtrée
+	 */
+	public static BufferedImage dilatation(int filtre[][], BufferedImage img) {
+		return null;
+	}
 	
-	public static void main(String[] args) throws IOException {
-		File path = new File("bdd//escalier1.JPG"); //Chemin vers l'image
+	public static BufferedImage sobel() 
+	{
+		return null;
+	}
+
+	public static void main(String[] args) throws IOException, InterruptedException {
+		String imgPath = "bdd//myImg.JPG";
+		String imgPath0 = "bdd//myImgCrop.JPG";
+		String imgPath4 = "bdd//myImgCrop2.JPG";
+		String imgPath5 = "bdd//myImgCrop3.JPG";
+		String imgPath1 = "bdd//escalier1.JPG";
+		String imgPath2 = "bdd//escalier2.JPG";
+		String imgPath3 = "bdd//escalier3.JPG";
+		String imgPath6="bdd//myImgF.JPG";
+		File path = new File(imgPath6); // Chemin vers l'image
 
 		BufferedImage img1 = null;
 		BufferedImage img2 = null;
+
 		try {
 			img1 = ImageIO.read(path);
 			img2 = ImageIO.read(path);
@@ -214,11 +301,26 @@ public class ProjetJM {
 		imshow(img1);
 		BufferedImage res;
 		res = nvgris(img2);
+		
+		imshow(res);
+		Thread.sleep(5000);
 		res = exo3bin(res);
 
 		filtremedian(res);
 
 		imshow(res);
+	boolean EightConnex = true ; // On travaille en 8-connexité.
+		
+		ConnectedComponentLabeling ccl = new Connexite() ;
+		//nombre = ccl.NumberOfConnectedComponent();
+		 ccl.Label(res, 0, EightConnex) ; // On calcule (étiquette) les composantes connexes.  On ne prend pas en compte la couleur noire car c'est le fond. Mettre -1 pour caractériser TOUTE la texture.
+		int[][] Carte = ccl.Labels() ; // la carte contenant la numérotation de chaque composante.
+		int[] Sizes = ccl.Sizes() ;
+		int nombre = ccl.NumberOfConnectedComponent();
+		
+		
+		System.out.println("nombre = "+nombre);
+		//arrayImageBinaire(res);
 
 	}
 

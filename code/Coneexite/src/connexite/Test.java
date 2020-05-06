@@ -13,7 +13,7 @@ public class Test {
 		int nombre;
 		
 
-		File path = new File("C:\\Users\\Utilisateur\\Pictures\\Image\\escalier5.PNG");
+		File path = new File("bdd\\escalier1.JPG");
 
 		BufferedImage img = null;
 		

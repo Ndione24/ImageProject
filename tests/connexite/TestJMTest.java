@@ -25,17 +25,17 @@ public class TestJMTest {
 	        int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 	        TestJM.imshow(originalImage);
 	        Thread.sleep(3000);
-	        int newWidth=originalImage.getWidth()/2;
+	        int newWidth=originalImage.getWidth();
 	        int newHeight=originalImage.getHeight();
-	        BufferedImage resizeImageJpg = cropImage(originalImage, 400, 0, newWidth, newHeight);
+	        BufferedImage resizeImageJpg = cropImage(originalImage, 300, 0, newWidth-300, newHeight);
 	        ImageIO.write(resizeImageJpg, "jpg", new File("bdd//escalier1_dup.JPG"));
 	        
 	        TestJM.imshow(resizeImageJpg);
-	        Thread.sleep(5000);
+	       /* Thread.sleep(5000);
 	        BufferedImage yep = cropImage(resizeImageJpg, 0, 0, newWidth, newHeight);
 	        ImageIO.write(yep, "jpg", new File("bdd//escalier3_dup.JPG"));
-	        
-	        TestJM.imshow(yep);
+	       
+	        TestJM.imshow(yep); */
 	        
 	        
 	        

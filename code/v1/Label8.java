@@ -244,7 +244,7 @@ public class Label8 {
        
        
        
-       System.out.println("NOMBRE ESCALIERS ="+nbescaliers);
+       System.out.println("NOMBRE DE MARCHES ="+nbescaliers);
        	
      
        

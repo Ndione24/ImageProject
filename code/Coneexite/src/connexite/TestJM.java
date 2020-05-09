@@ -399,6 +399,60 @@ public class TestJM {
 
 	}
 */
+    
+    public static int analyse(String pathImage, int numAlgo) throws IOException, InterruptedException 
+    {
+		
+		File path = new File(pathImage); // Chemin de l'image
+
+		BufferedImage img1 = null;
+		BufferedImage img2 = null;
+		try {
+			img1 = ImageIO.read(path);
+			img2 = ImageIO.read(path);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println(e1.getMessage());
+			e1.printStackTrace();
+		}
+		//imshow(img1);
+		BufferedImage res,tet;
+		res = nvgris(img2);
+		tet=nvgris(img2);		
+		//imshow(res);
+		filtremedian(res);
+		res = exo3bin(tet);
+		
+		if(numAlgo==1) 
+		{
+			BufferedImage coloredescaliers = Label8.getCC(res);
+			imshow(coloredescaliers);
+			return Label8.getNumberOfCC(coloredescaliers);
+		}
+		
+		else if(numAlgo==2) {
+		imshow(res);
+		tet=projection(res);
+		//imshow(tet);
+        BufferedImage imgCrop= cropImage(tet, 300, 0, tet.getWidth()-300, tet.getHeight());
+        //imshow(imgCrop);
+		boolean EightConnex = true ; // On travaille en 8-connexité.
+		ConnectedComponentLabeling ccl = new Connexite() ;
+		//nombre = ccl.NumberOfConnectedComponent();
+		 ccl.Label(imgCrop, 255, EightConnex) ;
+		int[][] Carte = ccl.Labels() ; 
+		int[] Sizes = ccl.Sizes() ;
+		int nombre = ccl.NumberOfConnectedComponent();
+	
+		System.out.println("nombre = "+nombre);
+		//arrayImageBinaire(res);
+		return nombre;
+		}
+		else 
+		{
+			return -1;
+		}
+    }
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String imgPath = "bdd//myImg.JPG";
@@ -413,7 +467,7 @@ public class TestJM {
 		String imgPath8="bdd//im3.JPG";
 		String imgPath9="bdd//imag5.JPG";
 		
-		File path = new File(imgPath7); // Chemin vers l'image
+		File path = new File(imgPath8); // Chemin vers l'image
 
 		BufferedImage img1 = null;
 		BufferedImage img2 = null;
@@ -433,19 +487,24 @@ public class TestJM {
 		filtremedian(res);
 		res = exo3bin(tet);
 		imshow(res);
-		tet=projection(res);
+		
+		/*tet=projection(res);
 		imshow(tet);
         BufferedImage imgCrop= cropImage(tet, 300, 0, tet.getWidth()-300, tet.getHeight());
-        imshow(imgCrop);
-		boolean EightConnex = true ; // On travaille en 8-connexité.
+        imshow(imgCrop);*/
+		/*boolean EightConnex = true ; // On travaille en 8-connexité.
 		ConnectedComponentLabeling ccl = new Connexite() ;
 		//nombre = ccl.NumberOfConnectedComponent();
 		 ccl.Label(imgCrop, 255, EightConnex) ; // On calcule (étiquette) les composantes connexes.  On ne prend pas en compte la couleur noire car c'est le fond. Mettre -1 pour caractériser TOUTE la texture.
 		int[][] Carte = ccl.Labels() ; // la carte contenant la numérotation de chaque composante.
 		int[] Sizes = ccl.Sizes() ;
 		int nombre = ccl.NumberOfConnectedComponent();
-	
-		System.out.println("nombre = "+nombre);
-		//arrayImageBinaire(res);
+		*/
+		//System.out.println("nombre = "+nombre);
+		
+		BufferedImage coloredescaliers = Label8.getCC(res);
+		imshow(coloredescaliers);
+		int a=Label8.getNumberOfCC(coloredescaliers);
+		System.out.println("val de a"+a);
 	}
 }

@@ -170,7 +170,7 @@ public class Label8 {
         	
         }**/
        
-       // reste à trouver le bon seuillage du nombre de pixels sur des images 
+       // reste Ã  trouver le bon seuillage du nombre de pixels sur des images 
        
        
     
@@ -203,7 +203,7 @@ public class Label8 {
        			//nbescaliers--;
        			
        		}
-       		else if(entry.getValue()>=2500 && entry.getValue()<=50000)
+       		else if(entry.getValue()>=2000 && entry.getValue()<=50000)
        		{
        		//keymax = entry.getKey();
        		
@@ -244,7 +244,7 @@ public class Label8 {
        
        
        
-       System.out.println("NOMBRE ESCALIERS ="+nbescaliers);
+       System.out.println("NOMBRE DE MARCHES ="+nbescaliers);
        	
      
        

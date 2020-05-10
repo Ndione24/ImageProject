@@ -221,7 +221,7 @@ public class TestJM {
 		// System.out.println(threshold);
 		return threshold;
 	}
-	public static void egalisation(BufferedImage img) {
+	public static void egalisation(BufferedImage img) throws IOException {
 		
 		//	initialisation de l histogramme
 
@@ -273,6 +273,8 @@ public class TestJM {
 				img.getRaster().setPixel(y, x,nivGris);				
 			}
 		}
+		
+		imshow(img);
 
 	}
 
@@ -438,17 +440,18 @@ public class TestJM {
         	res=nvgris(img2);
         	tet=nvgris(img2);
 		
-		
 		if(numAlgo==1) 
 		{
+        	
 			res = exo3bin(tet);
 			 filtremedian(res);
-			BufferedImage coloredescaliers = Label8.getCC(res2);
+			BufferedImage coloredescaliers = Label8.getCC(res);
 			imshow(coloredescaliers);
 			return Label8.getNumberOfCC(coloredescaliers);
 		}
 		
 		else if(numAlgo==2) {
+//		egalisation(img2);
 		filtremedian(res);
 		res = exo3bin(tet);
 		imshow(res);

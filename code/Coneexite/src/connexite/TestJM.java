@@ -416,16 +416,19 @@ public class TestJM {
 			e1.printStackTrace();
 		}
 		//imshow(img1);
-		BufferedImage res,tet;
+		BufferedImage res,tet,res2;
 		res = nvgris(img2);
+		res2=nvgris(img2);
 		tet=nvgris(img2);		
-		//imshow(res);
 		filtremedian(res);
 		res = exo3bin(tet);
+		res2=exo3bin(res2);
+		res2=filtremedian(res2);
+		
 		
 		if(numAlgo==1) 
 		{
-			BufferedImage coloredescaliers = Label8.getCC(res);
+			BufferedImage coloredescaliers = Label8.getCC(res2);
 			imshow(coloredescaliers);
 			return Label8.getNumberOfCC(coloredescaliers);
 		}

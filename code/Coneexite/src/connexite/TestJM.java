@@ -262,9 +262,9 @@ public class TestJM {
 	 * La dilation permet de boucher les trous de l'objet, autrement dit augmente la
 	 * taille de l'image
 	 * 
-	 * @param filtre : filtre qui sera appliqué à l'image
-	 * @param img    : l'image qui sera filtrée
-	 * @return une image filtrée
+	 * @param filtre : filtre qui sera appliquÃ© Ã  l'image
+	 * @param img    : l'image qui sera filtrÃ©e
+	 * @return une image filtrÃ©e
 	 */
 	public static BufferedImage dilatation(int filtre[][], BufferedImage img) {
 		return null;
@@ -416,30 +416,29 @@ public class TestJM {
 			e1.printStackTrace();
 		}
 		//imshow(img1);
-		BufferedImage res,tet,res2;
-		res = nvgris(img2);
-		res2=nvgris(img2);
-		tet=nvgris(img2);		
-		filtremedian(res);
-		res = exo3bin(tet);
-		res2=exo3bin(res2);
-		res2=filtremedian(res2);
+		BufferedImage res,tet;
+        	res=nvgris(img2);
+        	tet=nvgris(img2);
 		
 		
 		if(numAlgo==1) 
 		{
+			res = exo3bin(tet);
+			 filtremedian(res);
 			BufferedImage coloredescaliers = Label8.getCC(res2);
 			imshow(coloredescaliers);
 			return Label8.getNumberOfCC(coloredescaliers);
 		}
 		
 		else if(numAlgo==2) {
+		filtremedian(res);
+		res = exo3bin(tet);
 		imshow(res);
 		tet=projection(res);
 		//imshow(tet);
         BufferedImage imgCrop= cropImage(tet, 300, 0, tet.getWidth()-300, tet.getHeight());
         //imshow(imgCrop);
-		boolean EightConnex = true ; // On travaille en 8-connexité.
+		boolean EightConnex = true ; // On travaille en 8-connexitÃ©.
 		ConnectedComponentLabeling ccl = new Connexite() ;
 		//nombre = ccl.NumberOfConnectedComponent();
 		 ccl.Label(imgCrop, 255, EightConnex) ;
@@ -495,11 +494,11 @@ public class TestJM {
 		imshow(tet);
         BufferedImage imgCrop= cropImage(tet, 300, 0, tet.getWidth()-300, tet.getHeight());
         imshow(imgCrop);*/
-		/*boolean EightConnex = true ; // On travaille en 8-connexité.
+		/*boolean EightConnex = true ; // On travaille en 8-connexitÃ©.
 		ConnectedComponentLabeling ccl = new Connexite() ;
 		//nombre = ccl.NumberOfConnectedComponent();
-		 ccl.Label(imgCrop, 255, EightConnex) ; // On calcule (étiquette) les composantes connexes.  On ne prend pas en compte la couleur noire car c'est le fond. Mettre -1 pour caractériser TOUTE la texture.
-		int[][] Carte = ccl.Labels() ; // la carte contenant la numérotation de chaque composante.
+		 ccl.Label(imgCrop, 255, EightConnex) ; // On calcule (Ã©tiquette) les composantes connexes.  On ne prend pas en compte la couleur noire car c'est le fond. Mettre -1 pour caractÃ©riser TOUTE la texture.
+		int[][] Carte = ccl.Labels() ; // la carte contenant la numÃ©rotation de chaque composante.
 		int[] Sizes = ccl.Sizes() ;
 		int nombre = ccl.NumberOfConnectedComponent();
 		*/

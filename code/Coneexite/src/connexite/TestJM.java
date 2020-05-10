@@ -221,41 +221,59 @@ public class TestJM {
 		// System.out.println(threshold);
 		return threshold;
 	}
-
 	public static void egalisation(BufferedImage img) {
+		
+		//	initialisation de l histogramme
 
-		int width = img.getWidth();
-		int height = img.getHeight();
-		int totalpixel = width * height;
-		int[] histogram = new int[255];
-		int[] iarray = new int[1];
-		int i = 0;
+		int histogrammeTab[] =new int[256] ;
 
-		// read pixel intensities into histogram
-		for (int x = 1; x < width; x++) {
-			for (int y = 1; y < height; y++) {
-				int valueBefore = img.getRaster().getPixel(x, y, iarray)[0];
-				histogram[valueBefore]++;
+		for(int i = 0 ; i < 256 ; i++) {
+			histogrammeTab[i] = 0 ; 
+		}
+
+		//	remplir l histogramme avec l image d origine
+
+		for( int x = 0 ; x < img.getHeight() ; x++) {
+			for(int y = 0 ; y < img.getWidth() ; y++) {
+				int p = img.getRGB(y,x); 
+				int r = (p>>16)&0xff;
+				histogrammeTab[r]++;
 			}
 		}
 
-		int sum = 0;
-		// build a Lookup table LUT containing scale factor
-		float[] lut = new float[256];
-		for (i = 0; i < 255; ++i) {
-			sum += histogram[i];
-			lut[i] = sum * 255 / totalpixel;
+
+		//	initialiser l histogramme cumuler
+
+		int hist_cumule[] = new int[256];
+
+		for(int t=0 ; t<256 ; t++) {
+			hist_cumule[t]=0;
 		}
 
-		// transform image using sum histogram as a Lookup table
-		for (int x = 1; x < width; x++) {
-			for (int y = 1; y < height; y++) {
-				int valueBefore = img.getRaster().getPixel(x, y, iarray)[0];
-				int valueAfter = (int) lut[valueBefore];
-				iarray[0] = valueAfter;
-				img.getRaster().setPixel(x, y, iarray);
+		//	remplir l'histogramme cumuler
+		for(int y=0 ; y<256 ; y++) {
+
+			for(int x=0 ; x<=y ; x++) {
+
+				hist_cumule[y] += histogrammeTab[x]; 
+			}
+
+		}
+
+		//	egaliser l image initiale
+		int nivGris[] = new int[3];
+		for(int x=0 ; x<img.getHeight() ; x++) {
+			for(int y=0 ; y<img.getWidth() ; y++) {
+				int p = img.getRGB(y, x);
+				int r = (p>>16)&0xff; 
+				int j = (((256*(hist_cumule[r]-1))/(img.getHeight()*img.getWidth())));
+				nivGris[0] = j;
+				nivGris[1] = j;
+				nivGris[2] = j;
+				img.getRaster().setPixel(y, x,nivGris);				
 			}
 		}
+
 	}
 
 	/**

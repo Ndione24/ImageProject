@@ -1,12 +1,17 @@
 package connexite;
 
 import java.awt.Desktop;
+import java.awt.Graphics2D;
 import java.awt.TextArea;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -37,13 +42,14 @@ public class InterfaceApp extends Application {
 		launch(args);
 	}
 
-	private void openFile(File file) {
-		try {
-			desktop.open(file);
-		} catch (IOException ex) {
-			Logger.getLogger(InterfaceApp.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
+    private static BufferedImage resizeImage(BufferedImage originalImage, int type){
+	BufferedImage resizedImage = new BufferedImage(800, 700, type);
+	Graphics2D g = resizedImage.createGraphics();
+	g.drawImage(originalImage, 0, 0, 800, 700, null);
+	g.dispose();
+	return resizedImage;
+    }
+	
 
 	@Override
 	public void start(Stage dd) throws Exception {
@@ -60,10 +66,18 @@ public class InterfaceApp extends Application {
 					//System.out.println(file.getAbsolutePath());
 					String localUrlFile;
 					try {
-						localUrlFile = file.toURI().toURL().toString();
+						BufferedImage originalImage = ImageIO.read(file);
+						int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+						BufferedImage resizeImageJpg = resizeImage(originalImage, type);
+						File test=new File("bdd//test.jpg");
+						ImageIO.write(resizeImageJpg, "jpg", test);
+						localUrlFile = test.toURI().toURL().toString();
 						Image image = new Image(localUrlFile);
 						imview.setImage(image);
 					} catch (MalformedURLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -116,7 +130,7 @@ public class InterfaceApp extends Application {
 		String localUrlFile = file.toURI().toURL().toString();
 		Image image = new Image(localUrlFile);
 		
-		fp.getChildren().addAll(openButton, button, lab, choiceBox,labResult);
+		fp.getChildren().addAll(openButton, lab, choiceBox,button,labResult);
 		fp.setOrientation(Orientation.VERTICAL);
 		fp.setVgap(15);
 		
